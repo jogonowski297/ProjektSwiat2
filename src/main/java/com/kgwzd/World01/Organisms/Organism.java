@@ -1,30 +1,25 @@
 package com.kgwzd.World01.Organisms;
 
-import com.kgwzd.World01.Action;
-import com.kgwzd.World01.ActionEnum;
-import com.kgwzd.World01.Position;
-import com.kgwzd.World01.World;
+import com.kgwzd.World01.*;
 
 import java.util.ArrayList;
 
-public abstract class Organism {
-    int __power = 0;
-    int __initiative = 0;
-    Position __position = null;
-    int __liveLength = 0;
-    int __powerToReproduce = 0;
-    int __sign = 0;
-    World __world = null;
+public abstract class Organism implements OrganismInterface {
+    int __power;
+    int __initiative;
+    Position __position;
+    int __liveLength;
+    int __powerToReproduce;
+    char __sign;
+    World __world;
 
     public Organism (Organism organism, Position position, World world){
         if (organism != null) {
             this.__power = organism.__power;
             this.__initiative = organism.__initiative;
-            this.__position = organism.__position;
             this.__liveLength = organism.__liveLength;
             this.__powerToReproduce = organism.__powerToReproduce;
             this.__sign = organism.__sign;
-            this.__world = organism.__world;
         }
         else {
             if (position != null){
@@ -33,6 +28,7 @@ public abstract class Organism {
             if (world != null){
                 this.__world = world;
             }
+            initParams();
         }
     }
 
@@ -76,11 +72,11 @@ public abstract class Organism {
         this.__liveLength = value;
     }
 
-    public int getSign(){
+    public char getSign(){
         return this.__sign;
     }
 
-    public void setSign(int value){
+    public void setSign(char value){
         this.__sign = value;
     }
 
@@ -92,13 +88,13 @@ public abstract class Organism {
         this.__world = value;
     }
 
-    public abstract ArrayList<Action> move();
+    public void initParams(){
+        ;
+    }
 
-    public abstract ArrayList<Action> action();
-
-//    abstract Animal initParams();
-//
-//    abstract Animal _clone();
+    public Organism clone(){
+        return this;
+    }
 
     public ArrayList<Action> consequence(Organism atackingOrganism){
         ArrayList<Action> result = new ArrayList<Action>();
@@ -116,15 +112,16 @@ public abstract class Organism {
     public boolean ifReproduce(){
         boolean result = false;
 
+        System.out.println("getPower: " + this.getPower() + " " + this.getPowerToReproduce());
         if (this.getPower() >= this.getPowerToReproduce()){
             result = true;
         }
         return result;
     }
 
-    public String getString(){
+    public String printOrganism(){
         String className = this.getClass().getSimpleName();
-        return className + ": power: " + this.__power + "initiative: " + this.__initiative + "liveLength: " + this.__liveLength + "position: " + this.__position;
+        return className + ":" + "\n" + " power: " + this.__power + "\n" + " initiative: " + this.__initiative + "\n" + " liveLength: " + this.__liveLength + "\n" + " position: " + this.__position.print();
     }
 
 }

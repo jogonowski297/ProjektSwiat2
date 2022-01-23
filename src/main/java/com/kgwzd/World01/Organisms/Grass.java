@@ -18,7 +18,7 @@ public class Grass extends Plant {
         this.__initiative = 0;
         this.__liveLength = 6;
         this.__powerToReproduce = 3;
-        this.__sign = 'G';
+        this.__sign = 'G' ;
     }
 
 }

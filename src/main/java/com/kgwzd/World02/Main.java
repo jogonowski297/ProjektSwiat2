@@ -5,6 +5,10 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args){
-        System.out.println("World02");
+        String x = "okoko";
+
+        x += "123";
+
+        System.out.println(x);
     }
 }

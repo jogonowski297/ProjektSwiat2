@@ -11,11 +11,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        World javaWorld = new World(10,10);
+        World javaWorld = new World(5,5);
 
         Organism newOrg = null;
 
-        newOrg = new Grass(null, new Position(null, 9,9), javaWorld);
+        newOrg = new Grass(null, new Position(null, 4,4), javaWorld);
         javaWorld.addOrganism(newOrg);
 
         newOrg = new Grass(null, new Position(null, 1,1), javaWorld);

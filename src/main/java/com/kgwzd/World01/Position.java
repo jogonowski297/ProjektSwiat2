@@ -3,7 +3,7 @@ package com.kgwzd.World01;
 public class Position {
     int __x;
     int __y;
-    Position position;
+
     public Position(Position position, int xPosition, int yPosition){
         this.__x = 0;
         this.__y = 0;

@@ -37,12 +37,12 @@ public class Action {
     }
 
     public String print(){
-        String className = this.getClass().getSimpleName();
+        String className = this.__organism.getClass().getSimpleName();
         Map<ActionEnum,String> dictionary = new HashMap<ActionEnum,String>();
-        dictionary.put(ActionEnum.A_ADD, className + ": add at: " + this.get__position());
+        dictionary.put(ActionEnum.A_ADD, className + ": add at: " + this.get__position().print());
         dictionary.put(ActionEnum.A_INCREASEPOWER, className + ": increase power: " + this.get__value());
-        dictionary.put(ActionEnum.A_MOVE, className + ": move form: " + this.__organism.getPosition() + " to: " + this.get__position());
-        dictionary.put(ActionEnum.A_REMOVE, className + ": remove form: " + this.__organism.getPosition());
+        dictionary.put(ActionEnum.A_MOVE, className + ": move form: " + this.__organism.getPosition().print() + " to: " + this.get__position().print());
+        dictionary.put(ActionEnum.A_REMOVE, className + ": remove form: " + this.__organism.getPosition().print());
         return dictionary.get(this.get__action());
     }
 }

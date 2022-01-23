@@ -9,12 +9,12 @@ import com.kgwzd.World01.World;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Animal extends Organism{
+public abstract class Animal extends Organism{
     Position __lastPosition = null;
 
     public Animal(Organism organism, Position position, World world) {
         super(organism, position, world);
-        this.__lastPosition = position;
+        __lastPosition = position;
     }
 
     public Position getLastPosition(){
@@ -29,9 +29,9 @@ public class Animal extends Organism{
 
         ArrayList<Action> result = new ArrayList<Action>();
         ArrayList<Position> pomPositions = this.getNeighboringPositions();
-        Position newPosition = null;
+        Position newPosition;
 
-        if (pomPositions != null && !pomPositions.isEmpty()) {
+        if (pomPositions != null) {
             newPosition = pomPositions.get(new Random().nextInt(pomPositions.size()));
             result.add(new Action(ActionEnum.A_MOVE,newPosition,0,this));
             this.__lastPosition = this.__position;
@@ -45,13 +45,13 @@ public class Animal extends Organism{
 
     public ArrayList<Action> action(){
         ArrayList<Action> result = new ArrayList<Action>();
-        Animal newAnimal = null;
-        ArrayList<Position> birthPositions = this.getNeighboringBirthPositions();
+        Organism newAnimal;
+        ArrayList<Position> birthPositions = this.getNeighboringBirthPosition();
 
         if(this.ifReproduce() && !birthPositions.isEmpty()){
             Position newAnimalPosition = birthPositions.get(new Random().nextInt(birthPositions.size()));
-//            newAnimal = this._clone();
-//            newAnimal.initParams();
+            newAnimal = this.clone();
+            newAnimal.initParams();
             newAnimal.__position = newAnimalPosition;
             this.__power = (this.__power/2);
             result.add(new Action(ActionEnum.A_ADD, newAnimalPosition, 0, newAnimal));
@@ -59,11 +59,13 @@ public class Animal extends Organism{
         return result;
     }
 
+
     public ArrayList<Position> getNeighboringPositions(){
+        System.out.println("This world: " + this.__world);
         return this.__world.getNeighboringPositions(this.getPosition());
     }
 
-    public ArrayList<Position> getNeighboringBirthPositions(){
+    public ArrayList<Position> getNeighboringBirthPosition(){
         return this.__world.filterFreePositions(this.__world.getNeighboringPositions(this.getPosition()));
     }
 }

@@ -10,7 +10,9 @@ public class World {
     int __worldY;
     int __turn=0;
     ArrayList<Organism> __organisms = new ArrayList<Organism>();
+    ArrayList<Organism> __organismsToRemove = new ArrayList<Organism>();
     ArrayList<Organism> __newOrganisms = new ArrayList<Organism>();
+    ArrayList<Organism> __newOrganismsToRemove = new ArrayList<Organism>();
     char __separator = '.';
 
     public World(int worldx, int worldy){
@@ -50,17 +52,20 @@ public class World {
         __newOrganisms = value;
     }
 
-    public int get__separator(){
+    public char get__separator(){
         return __separator;
     }
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_YELLOW = "\u001B[32m";
+
     public void makeTurn(){
-        ArrayList<Action> actions = new ArrayList<>();
+        ArrayList<Action> actions;
 
         for ( Organism org : this.__organisms){
             if (this.positiononBoard(org.getPosition())){
                 actions = org.move();
-                for(Action a:actions){
+                for(Action a: actions){
                     this.makeMove(a);
                 }
                 actions.clear();
@@ -73,31 +78,29 @@ public class World {
                 }
             }
         }
-        this.__organisms.clear();
-        for(Organism o : get__organisms()){
-            if(this.positiononBoard(o.getPosition())){
-                this.__organisms.add(o);
-            }
-        }
-        for( Organism o : this.get__organisms()){
-            o.setLiveLength(o.getLiveLength()-1);
-            o.setPower(o.getPower()-1);
-            if(o.getLiveLength() < 1){
-                System.out.print(this.getClass().getSimpleName() + ": died of old age at: " + String.valueOf(o.getPosition()));
-            }
-        }
-        this.__organisms.clear();
-        for(Organism o : get__organisms()){
-            if(o.getLiveLength() > 0){
-                this.__organisms.add(o);
+
+        for ( Organism o : this.__organisms){
+            if(!this.positiononBoard(o.getPosition())){
+                this.__organisms.remove(o);
             }
         }
 
-        for(Organism o : get__newOrganisms()){
-            if(this.positiononBoard(o.getPosition())){
-                this.__organisms.add(o);
+        for( Organism o : this.__organisms){
+            o.setLiveLength(o.getLiveLength()-1);
+            o.setPower(o.getPower()+1);
+            if(o.getLiveLength() < 1){
+                System.out.println(o.getClass().getSimpleName() + ": died of old age at: " + o.getPosition().print());
+                this.__organismsToRemove.add(o);
             }
         }
+        this.__organisms.removeAll(this.__organismsToRemove);
+
+        for(Organism o : this.__newOrganisms){
+            if(!this.positiononBoard(o.getPosition())){
+                this.__newOrganismsToRemove.add(o);
+            }
+        }
+        this.__newOrganisms.removeAll(this.__newOrganismsToRemove);
 
         this.__organisms.addAll(this.get__newOrganisms());
         this.__newOrganisms.clear();
@@ -106,7 +109,8 @@ public class World {
     }
 
     public void makeMove(Action action){
-        System.out.println(action);
+        System.out.println(action.print());
+        System.out.println("get action; " + action.get__action());
         if(action.get__action() == ActionEnum.A_ADD){
             this.__newOrganisms.add(action.get__organism());
         }
@@ -114,7 +118,7 @@ public class World {
             action.__organism.setPower(action.__organism.getPower()+action.get__value());
         }
         else if (action.get__action() == ActionEnum.A_MOVE){
-            action.__organism.setPosition(action.get__position());
+            action.__organism.setPosition(action.__position);
         }
         else if (action.get__action() == ActionEnum.A_REMOVE){
             action.__organism.setPosition(new Position(action.__organism.getPosition(), -1,-1));
@@ -132,14 +136,13 @@ public class World {
     }
 
     public boolean positiononBoard(Position position){
-        return position.__x >=0 && position.__y >=0 && position.__x < this.__worldX && position.__y < this.__worldY;
+        return (position.__x >=0 && position.__y >=0) && (position.__x < this.__worldX && position.__y < this.__worldY);
     }
 
     public Organism getOrganismFromPosition(Position position){
         Organism pomOrganism = null;
-
-        for(Organism org:this.__organisms){
-            if(org.getPosition() == position){
+        for(Organism org : this.__organisms){
+            if(org.getPosition().print().equals(position.print())){
                 pomOrganism = org;
                 break;
             }
@@ -158,7 +161,7 @@ public class World {
     public ArrayList<Position> getNeighboringPositions(Position position){
 
         ArrayList<Position> result = new ArrayList<Position>();
-        Position pomPosition = null;
+        Position pomPosition;
 
         for (int y=-1; y<=2; y++){
             for(int x=-1; x<=2; x++){
@@ -196,19 +199,19 @@ public class World {
     }
 
     public String print(){
-        StringBuilder result = new StringBuilder("\nturn: " + String.valueOf(this.__turn) + "\n");
-
-        for (int wY = 0; wY<=this.__worldY; wY++){
+        String result = "\nturn: " + String.valueOf(this.__turn) + "\n";
+        Organism org = null;
+        for (int wY = 0; wY <= this.__worldY; wY++){
             for (int wX = 0; wX <= this.__worldX; wX++) {
-                Organism org = this.getOrganismFromPosition(new Position(null, wX, wY));
+                org = this.getOrganismFromPosition(new Position(null, wX, wY));
                 if (org != null) {
-                    result.append(org.getSign());
+                    result += "[" + ANSI_YELLOW + org.getSign() + ANSI_RESET + "]";
                 } else {
-                    result.append(this.get__separator());
+                    result += "[" + this.get__separator() + "]";
                 }
             }
-            result.append("\n");
+            result += "\n";
         }
-        return result.toString();
+        return result;
     }
 }

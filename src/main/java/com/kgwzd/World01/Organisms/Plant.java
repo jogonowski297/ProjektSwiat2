@@ -8,7 +8,7 @@ import com.kgwzd.World01.World;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Plant extends Organism{
+public abstract class Plant extends Organism{
     public Plant(Plant plant, Position position, World world){
         super(plant, position, world);
     }
@@ -19,14 +19,16 @@ public class Plant extends Organism{
 
     public ArrayList<Action> action(){
         ArrayList<Action> result = new ArrayList<Action>();
-        Plant newPlant = null;
-        Position newPosition = null;
+        Organism newPlant;
+        Position newPosition;
 
         if(this.ifReproduce()){
             ArrayList<Position> pomPositions = this.getFreeNeighboringPosition(this.getPosition());
 
             if(pomPositions != null){
                 newPosition = pomPositions.get(new Random().nextInt(pomPositions.size()));
+                newPlant = this.clone();
+                newPlant.initParams();
                 newPlant.setPosition(newPosition);
                 this.setPower(this.getPower()/2);
                 result.add(new Action(ActionEnum.A_ADD,newPosition,0,newPlant));
@@ -34,6 +36,7 @@ public class Plant extends Organism{
         }
         return result;
     }
+
 
     public ArrayList<Position> getFreeNeighboringPosition(Position position){
         return this.__world.filterFreePositions(this.__world.getNeighboringPositions(position));
