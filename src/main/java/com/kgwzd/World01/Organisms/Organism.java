@@ -88,10 +88,6 @@ public abstract class Organism implements OrganismInterface {
         this.__world = value;
     }
 
-    public void initParams(){
-        ;
-    }
-
     public Organism clone(){
         return this;
     }
@@ -112,7 +108,6 @@ public abstract class Organism implements OrganismInterface {
     public boolean ifReproduce(){
         boolean result = false;
 
-        System.out.println("getPower: " + this.getPower() + " " + this.getPowerToReproduce());
         if (this.getPower() >= this.getPowerToReproduce()){
             result = true;
         }

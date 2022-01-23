@@ -1,7 +1,9 @@
 package com.kgwzd.World01;
 
+import com.kgwzd.World01.Organisms.Animal;
 import com.kgwzd.World01.Organisms.Organism;
 import com.kgwzd.World01.Organisms.Plant;
+import com.kgwzd.World01.Organisms.Wolf;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,7 @@ public class World {
     ArrayList<Organism> __newOrganisms = new ArrayList<Organism>();
     ArrayList<Organism> __newOrganismsToRemove = new ArrayList<Organism>();
     char __separator = '.';
+    World __worldCopy;
 
     public World(int worldx, int worldy){
         __worldX = worldx;
@@ -61,7 +64,6 @@ public class World {
 
     public void makeTurn(){
         ArrayList<Action> actions;
-
         for ( Organism org : this.__organisms){
             if (this.positiononBoard(org.getPosition())){
                 actions = org.move();
@@ -73,6 +75,7 @@ public class World {
                     actions = org.action();
                     for (Action a : actions){
                         this.makeMove(a);
+
                     }
                     actions.clear();
                 }
@@ -110,7 +113,6 @@ public class World {
 
     public void makeMove(Action action){
         System.out.println(action.print());
-        System.out.println("get action; " + action.get__action());
         if(action.get__action() == ActionEnum.A_ADD){
             this.__newOrganisms.add(action.get__organism());
         }
@@ -163,9 +165,9 @@ public class World {
         ArrayList<Position> result = new ArrayList<Position>();
         Position pomPosition;
 
-        for (int y=-1; y<=2; y++){
-            for(int x=-1; x<=2; x++){
-                pomPosition = new Position(null,position.__x + x, position.__y + y);
+        for (int y=-1; y<2; y++){
+            for(int x=-1; x<2; x++){
+                pomPosition = new Position(null,position.getX() + x, position.getY() + y);
                 if(this.positiononBoard(pomPosition) && !(y == 0 && x == 0)){
                     result.add(pomPosition);
                 }
@@ -198,11 +200,24 @@ public class World {
         return result;
     }
 
+    public ArrayList<Position> filterPositionsWithOtherSpecies(ArrayList<Position> fields, Animal species){
+        ArrayList<Position> result = new ArrayList<Position>();
+        Organism pomOrg;
+
+        for(Position field : fields){
+            pomOrg = this.getOrganismFromPosition(field);
+            if(!(pomOrg instanceof Animal)){
+                result.add(field);
+            }
+        }
+        return result;
+    }
+
     public String print(){
         String result = "\nturn: " + String.valueOf(this.__turn) + "\n";
         Organism org = null;
-        for (int wY = 0; wY <= this.__worldY; wY++){
-            for (int wX = 0; wX <= this.__worldX; wX++) {
+        for (int wY = 0; wY <= this.__worldY-1; wY++){
+            for (int wX = 0; wX <= this.__worldX-1; wX++) {
                 org = this.getOrganismFromPosition(new Position(null, wX, wY));
                 if (org != null) {
                     result += "[" + ANSI_YELLOW + org.getSign() + ANSI_RESET + "]";

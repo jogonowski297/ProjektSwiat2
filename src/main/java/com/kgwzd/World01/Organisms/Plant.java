@@ -24,10 +24,11 @@ public abstract class Plant extends Organism{
 
         if(this.ifReproduce()){
             ArrayList<Position> pomPositions = this.getFreeNeighboringPosition(this.getPosition());
-
-            if(pomPositions != null){
+            if(!pomPositions.isEmpty()){
                 newPosition = pomPositions.get(new Random().nextInt(pomPositions.size()));
                 newPlant = this.clone();
+                newPlant.setWorld(this.getWorld());
+                newPlant.setPosition(this.getPosition());
                 newPlant.initParams();
                 newPlant.setPosition(newPosition);
                 this.setPower(this.getPower()/2);

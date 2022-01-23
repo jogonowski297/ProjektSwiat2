@@ -1,8 +1,6 @@
 package com.kgwzd.World01;
 
-import com.kgwzd.World01.Organisms.Grass;
-import com.kgwzd.World01.Organisms.Organism;
-import com.kgwzd.World01.Organisms.Sheep;
+import com.kgwzd.World01.Organisms.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,17 +9,19 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        World javaWorld = new World(5,5);
+        World javaWorld = new World(8,8);
+        Organism newOrg;
 
-        Organism newOrg = null;
-
-        newOrg = new Grass(null, new Position(null, 4,4), javaWorld);
+        newOrg = new Grass(null, new Position(null, 2,2), javaWorld);
         javaWorld.addOrganism(newOrg);
 
-        newOrg = new Grass(null, new Position(null, 1,1), javaWorld);
+        newOrg = new Dandelion(null, new Position(null, 2,4), javaWorld);
         javaWorld.addOrganism(newOrg);
 
-        newOrg = new Sheep(null, new Position(null, 2,2), javaWorld);
+        newOrg = new Sheep(null, new Position(null, 2,3), javaWorld);
+        javaWorld.addOrganism(newOrg);
+
+        newOrg = new Wolf(null, new Position(null, 7,7), javaWorld);
         javaWorld.addOrganism(newOrg);
 
         System.out.println(javaWorld.print());

@@ -26,9 +26,8 @@ public abstract class Animal extends Organism{
     }
 
     public ArrayList<Action> move(){
-
         ArrayList<Action> result = new ArrayList<Action>();
-        ArrayList<Position> pomPositions = this.getNeighboringPositions();
+        ArrayList<Position> pomPositions = getNeighboringPositions();
         Position newPosition;
 
         if (pomPositions != null) {
@@ -48,9 +47,11 @@ public abstract class Animal extends Organism{
         Organism newAnimal;
         ArrayList<Position> birthPositions = this.getNeighboringBirthPosition();
 
-        if(this.ifReproduce() && !birthPositions.isEmpty()){
+        if(this.ifReproduce() && !(birthPositions.isEmpty())){
             Position newAnimalPosition = birthPositions.get(new Random().nextInt(birthPositions.size()));
             newAnimal = this.clone();
+            newAnimal.setWorld(this.getWorld());
+            newAnimal.setPosition(this.getPosition());
             newAnimal.initParams();
             newAnimal.__position = newAnimalPosition;
             this.__power = (this.__power/2);
@@ -61,7 +62,6 @@ public abstract class Animal extends Organism{
 
 
     public ArrayList<Position> getNeighboringPositions(){
-        System.out.println("This world: " + this.__world);
         return this.__world.getNeighboringPositions(this.getPosition());
     }
 
