@@ -9,10 +9,12 @@ public class Grass extends Plant {
         super(grass,position,world);
     }
 
+    @Override
     public Grass clone(){
         return new Grass(this,null,null);
     }
 
+    @Override
     public void initParams(){
         this.__power = 0;
         this.__initiative = 0;

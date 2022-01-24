@@ -8,10 +8,12 @@ public class Dandelion extends Plant {
         super(dandelion,position,world);
     }
 
+    @Override
     public Dandelion clone(){
         return new Dandelion(this,null,null);
     }
 
+    @Override
     public void initParams(){
         this.__power = 0;
         this.__initiative = 0;

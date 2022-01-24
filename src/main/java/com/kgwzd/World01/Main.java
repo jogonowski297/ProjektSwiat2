@@ -12,16 +12,19 @@ public class Main {
         World javaWorld = new World(8,8);
         Organism newOrg;
 
-        newOrg = new Grass(null, new Position(null, 2,2), javaWorld);
+        newOrg = new Grass(null, new Position(null, 4,0), javaWorld);
         javaWorld.addOrganism(newOrg);
 
-        newOrg = new Dandelion(null, new Position(null, 2,4), javaWorld);
+        newOrg = new Dandelion(null, new Position(null, 0,4), javaWorld);
         javaWorld.addOrganism(newOrg);
 
-        newOrg = new Sheep(null, new Position(null, 2,3), javaWorld);
+        newOrg = new Sheep(null, new Position(null, 0,0), javaWorld);
         javaWorld.addOrganism(newOrg);
 
         newOrg = new Wolf(null, new Position(null, 7,7), javaWorld);
+        javaWorld.addOrganism(newOrg);
+
+        newOrg = new Toadstool(null, new Position(null, 4,4), javaWorld);
         javaWorld.addOrganism(newOrg);
 
         System.out.println(javaWorld.print());

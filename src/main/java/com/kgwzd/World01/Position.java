@@ -43,7 +43,7 @@ public class Position {
     }
 
     public String print(){
-        return this.getX() + " , " + this.getY();
+        return "(" + this.getX() + ", " + this.getY() + ")";
     }
 
 }

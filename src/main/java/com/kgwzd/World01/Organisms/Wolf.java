@@ -13,10 +13,12 @@ public class Wolf extends Animal{
         super(wolf,position,world);
     }
 
+    @Override
     public Wolf clone(){
         return new Wolf(this,null,null);
     }
 
+    @Override
     public void initParams(){
         this.__power = 8;
         this.__initiative = 5;

@@ -10,10 +10,12 @@ public class Sheep extends Animal {
         super(sheep,position,world);
     }
 
+    @Override
     public Sheep clone(){
         return new Sheep(this,null,null);
     }
 
+    @Override
     public void initParams(){
         this.__power = 3;
         this.__initiative = 3;

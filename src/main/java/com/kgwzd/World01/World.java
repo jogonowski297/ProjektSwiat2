@@ -10,17 +10,22 @@ import java.util.ArrayList;
 public class World {
     int __worldX;
     int __worldY;
-    int __turn=0;
-    ArrayList<Organism> __organisms = new ArrayList<Organism>();
-    ArrayList<Organism> __organismsToRemove = new ArrayList<Organism>();
-    ArrayList<Organism> __newOrganisms = new ArrayList<Organism>();
-    ArrayList<Organism> __newOrganismsToRemove = new ArrayList<Organism>();
-    char __separator = '.';
-    World __worldCopy;
+    int __turn;
+    ArrayList<Organism> __organisms;
+    ArrayList<Organism> __organismsToRemove;
+    ArrayList<Organism> __newOrganisms;
+    ArrayList<Organism> __newOrganismsToRemove;
+    char __separator;
 
     public World(int worldx, int worldy){
         __worldX = worldx;
         __worldY = worldy;
+        __turn=0;
+        __organisms = new ArrayList<Organism>();
+        __organismsToRemove = new ArrayList<Organism>();
+        __newOrganisms = new ArrayList<Organism>();
+        __newOrganismsToRemove = new ArrayList<Organism>();
+        __separator = '.';
     }
 
     public int get__worldX(){
@@ -70,14 +75,13 @@ public class World {
                 for(Action a: actions){
                     this.makeMove(a);
                 }
-                actions.clear();
+                actions.removeAll(actions);
                 if(this.positiononBoard(org.getPosition())){
                     actions = org.action();
                     for (Action a : actions){
                         this.makeMove(a);
-
                     }
-                    actions.clear();
+                    actions.removeAll(actions);
                 }
             }
         }
@@ -210,6 +214,20 @@ public class World {
                 result.add(field);
             }
         }
+        return result;
+    }
+
+    public ArrayList<Position> getFreePositions(){
+        ArrayList<Position> result = new ArrayList<Position>();
+        for(int wY = 0; wY <= this.__worldY-1; wY++){
+            for (int wX = 0; wX <= this.__worldX-1; wX++){
+                Organism org = this.getOrganismFromPosition(new Position(null,wX,wY));
+                if(org == null){
+                    result.add(new Position(null, wX,wY));
+                }
+            }
+        }
+
         return result;
     }
 
