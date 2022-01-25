@@ -11,6 +11,7 @@ import java.util.Random;
 
 public abstract class Animal extends Organism{
     Position __lastPosition = null;
+    int stopTurn = 0;
 
     public Animal(Organism organism, Position position, World world) {
         super(organism, position, world);
@@ -23,6 +24,10 @@ public abstract class Animal extends Organism{
 
     public void setLastPosition(Position value){
         this.__lastPosition = value;
+    }
+
+    public int getStopTurn(){
+        return this.stopTurn;
     }
 
     public ArrayList<Action> move(){

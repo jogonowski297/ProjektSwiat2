@@ -43,6 +43,7 @@ public class Action {
         dictionary.put(ActionEnum.A_INCREASEPOWER, className + ": increase power: " + this.get__value());
         dictionary.put(ActionEnum.A_MOVE, className + ": move form: " + this.__organism.getPosition().print() + " to: " + this.get__position().print());
         dictionary.put(ActionEnum.A_REMOVE, className + ": remove form: " + this.__organism.getPosition().print());
+        dictionary.put(ActionEnum.A_STOP, className + ": Zatzymał organizmy na 2 rundy: ");
         return dictionary.get(this.get__action());
     }
 }

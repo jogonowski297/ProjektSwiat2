@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Plant extends Organism{
+    int stopTurn = 0;
+
     public Plant(Plant plant, Position position, World world){
         super(plant, position, world);
     }

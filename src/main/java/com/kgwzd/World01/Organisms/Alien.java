@@ -10,10 +10,10 @@ public class Alien extends Aliens{
 
     @Override
     public void initParams(){
-        this.__power = 3;
-        this.__initiative = 3;
-        this.__liveLength = 10;
-        this.__powerToReproduce = 6;
-        this.__sign = 'S';
+        this.__power = 99;
+        this.__initiative = 99;
+        this.__liveLength = 99;
+        this.__powerToReproduce = 99;
+        this.__sign = 'A';
     }
 }

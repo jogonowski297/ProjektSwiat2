@@ -5,7 +5,6 @@ import com.kgwzd.World01.Organisms.Organism;
 import java.util.ArrayList;
 
 public interface OrganismInterface {
-
     ArrayList<Action> move();
 
     ArrayList<Action> action();
