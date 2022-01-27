@@ -18,7 +18,7 @@ public class Grass extends Plant {
     public void initParams(){
         this.__power = 0;
         this.__initiative = 0;
-        this.__liveLength = 6;
+        this.__liveLength = 7;
         this.__powerToReproduce = 3;
         this.__sign = 'G' ;
     }

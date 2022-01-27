@@ -16,7 +16,9 @@ public class testGrass {
         newOrg = new Grass(null, new Position(null, 3, 3), javaWorld);
         javaWorld.addOrganism(newOrg);
 
-        System.out.println(javaWorld.print());
+        Organism positionGrass = javaWorld.getOrganismFromPosition(new Position(null,3,3));
+
+        assertEquals("Czy trawa została dodana na pole (3,3)", 'G', positionGrass.getSign());
     }
 
     @Test

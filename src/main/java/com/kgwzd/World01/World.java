@@ -18,6 +18,7 @@ public class World implements Subject {
     ArrayList<Organism> __newOrganismsToRemove;
     ArrayList<Position> __positionsWithStop;
     Organism copyAlien;
+    boolean orgToRemove;
     private ArrayList<Observer> observlist;
     boolean alienLive;
     char __separator;
@@ -32,6 +33,7 @@ public class World implements Subject {
         __newOrganisms = new ArrayList<Organism>();
         __newOrganismsToRemove = new ArrayList<Organism>();
         __positionsWithStop = new ArrayList<Position>();
+        orgToRemove = false;
         copyAlien = null;
         alienLive = false;
         __separator = '.';
@@ -92,7 +94,9 @@ public class World implements Subject {
 
     public void makeTurn(){
         ArrayList<Action> actions;
-        for ( Organism org : this.__organisms){
+        ArrayList<Organism> copyOrganisms = new ArrayList<>(this.__organisms);
+
+        for ( Organism org : copyOrganisms){
             if(this.__turnStop >= 0 && this.isIn(org, this.getPositionsWithStop())){
                 System.out.println(org.getSign() + " : Zatrzymany na: " + this.__turnStop + " rundy");
                 continue;

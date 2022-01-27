@@ -17,7 +17,7 @@ public class Dandelion extends Plant {
     public void initParams(){
         this.__power = 0;
         this.__initiative = 0;
-        this.__liveLength = 6;
+        this.__liveLength = 5;
         this.__powerToReproduce = 2;
         this.__sign = 'D' ;
     }

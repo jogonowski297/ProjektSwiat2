@@ -23,16 +23,27 @@ public class testAlien {
         Organism alien = new Alien(null, new Position(null, 2, 2), javaWorld);
         javaWorld.addOrganism(alien);
 
+        int stop1 = 0;
+        int stop2 = 0;
+
 
         for(int i=0; i<=4;i++){
+            if(i==1){
+                stop1=javaWorld.__turnStop;
+            }
+            if(i==3){
+                stop2=javaWorld.__turnStop;
+            }
             System.out.println("\nTurn: " + (i+1));
             javaWorld.makeTurn();
             System.out.println(javaWorld.print());
             if(i==0){
                 javaWorld.removeAlien();
             }
-
         }
+
+        assertEquals("Czy suma zatrzymanych rund jest rowna 2", 2, stop2+stop1);
+
     }
 
 

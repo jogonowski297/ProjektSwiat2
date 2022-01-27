@@ -26,15 +26,18 @@ public class Toadstool extends Plant{
         this.__sign = 'T';
     }
 
-    public ArrayList<Action> consequences(Organism atackingOrganism){
+    public ArrayList<Action> consequence(Organism atackingOrganism){
         ArrayList<Action> result = new ArrayList<Action>();
 
         if(this.getPower() > atackingOrganism.getPower()){
             result.add(new Action(ActionEnum.A_REMOVE, new Position(null, -1,-1),0, atackingOrganism));
+            __world.get__organisms().remove(atackingOrganism);
         }
         else {
             result.add(new Action(ActionEnum.A_REMOVE, new Position(null, -1,-1),0, this));
             result.add(new Action(ActionEnum.A_REMOVE, new Position(null, -1,-1),0, atackingOrganism));
+            __world.get__organisms().remove(atackingOrganism);
+            __world.get__organisms().remove(this);
         }
         return result;
     }

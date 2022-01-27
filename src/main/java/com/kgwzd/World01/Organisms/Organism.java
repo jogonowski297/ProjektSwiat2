@@ -97,9 +97,13 @@ public abstract class Organism implements OrganismInterface {
 
         if(this.getPower() > atackingOrganism.getPower()) {
             result.add(new Action(ActionEnum.A_REMOVE, new Position(null, -1, -1), 0, atackingOrganism)) ;
+            System.out.println(this.getSign() + " kill " +atackingOrganism.getSign());
+            __world.get__organisms().remove(atackingOrganism);
         }
         else{
             result.add(new Action(ActionEnum.A_REMOVE, new Position(null, -1, -1), 0, this));
+            System.out.println(atackingOrganism.getSign() + " kill " +this.getSign());
+            __world.get__organisms().remove(this);
         }
 
         return result;
