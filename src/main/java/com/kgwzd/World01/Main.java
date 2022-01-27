@@ -1,5 +1,6 @@
 package com.kgwzd.World01;
 
+import com.kgwzd.World01.Obserwator.Observer;
 import com.kgwzd.World01.Organisms.*;
 
 import java.util.*;
@@ -11,8 +12,10 @@ public class Main {
         int tour = 0;
         ArrayList<Position> freePositions;
         Organism newOrg;
+        Gamer gamer = new Gamer();
 
         World javaWorld = new World(worldXY, worldXY);
+        javaWorld.register(gamer);
 
         newOrg = new Grass(null, new Position(null, 4, 0), javaWorld);
         javaWorld.addOrganism(newOrg);

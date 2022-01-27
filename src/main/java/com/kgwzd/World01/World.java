@@ -3,12 +3,11 @@ package com.kgwzd.World01;
 import com.kgwzd.World01.Organisms.Animal;
 import com.kgwzd.World01.Organisms.Organism;
 import com.kgwzd.World01.Organisms.Plant;
-import com.kgwzd.World01.Organisms.Wolf;
-
+import com.kgwzd.World01.Obserwator.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class World {
+public class World implements Subject {
     int __worldX;
     int __worldY;
     int __turn;
@@ -18,6 +17,8 @@ public class World {
     ArrayList<Organism> __newOrganisms;
     ArrayList<Organism> __newOrganismsToRemove;
     ArrayList<Position> __positionsWithStop;
+    Organism copyAlien;
+    private ArrayList<Observer> observlist;
     boolean alienLive;
     char __separator;
 
@@ -31,8 +32,10 @@ public class World {
         __newOrganisms = new ArrayList<Organism>();
         __newOrganismsToRemove = new ArrayList<Organism>();
         __positionsWithStop = new ArrayList<Position>();
+        copyAlien = null;
         alienLive = false;
         __separator = '.';
+        observlist = new ArrayList<Observer>();
     }
 
     public int get__worldX(){
@@ -91,6 +94,7 @@ public class World {
         ArrayList<Action> actions;
         for ( Organism org : this.__organisms){
             if(this.__turnStop >= 0 && this.isIn(org, this.getPositionsWithStop())){
+                System.out.println(org.getSign() + " : Zatrzymany na: " + this.__turnStop + " rundy");
                 continue;
             }
             if (this.positiononBoard(org.getPosition())){
@@ -99,14 +103,12 @@ public class World {
                     this.makeMove(a);
                 }
                 actions.removeAll(actions);
-                System.out.println(actions);
                 if(this.positiononBoard(org.getPosition())){
                     actions = org.action();
                     for (Action a : actions){
                         this.makeMove(a);
                     }
                     actions.removeAll(actions);
-                    System.out.println(actions);
                 }
             }
         }
@@ -121,7 +123,7 @@ public class World {
             o.setLiveLength(o.getLiveLength()-1);
             o.setPower(o.getPower()+1);
             if(o.getLiveLength() < 1){
-                System.out.println(o.getClass().getSimpleName() + ": died of old age at: " + o.getPosition().print());
+                notifyObservers(o.getClass().getSimpleName(),o.getPosition().print());
                 this.__organismsToRemove.add(o);
             }
         }
@@ -138,25 +140,48 @@ public class World {
         this.__newOrganisms.clear();
         this.set__turn(this.get__turn()+1);
         this.__turnStop -= 1;
+
+//        for(Organism o : this.__organisms){
+//            if(o.getSign() == 'A'){
+//                this.copyAlien = o;
+//                this.__organisms.remove(o);
+//                break;
+//            }
+//        }
+//        if(this.copyAlien != null) {
+//            this.addOrganism(copyAlien);
+//        }
     }
+
+//    public void makeMove(Action action){
+//        System.out.println(action.print());
+//        if(action.get__action() == ActionEnum.A_ADD){
+//            this.__newOrganisms.add(action.get__organism());
+//        }
+//        else if (action.get__action() == ActionEnum.A_INCREASEPOWER){
+//            action.__organism.setPower(action.__organism.getPower()+action.get__value());
+//        }
+//        else if (action.get__action() == ActionEnum.A_MOVE){
+//            action.__organism.setPosition(action.__position);
+//        }
+//        else if (action.get__action() == ActionEnum.A_REMOVE){
+//            action.__organism.setPosition(new Position(action.__organism.getPosition(), -1,-1));
+//        }
+//        else if (action.get__action() == ActionEnum.A_STOP){
+//            this.__turnStop = 3;
+//        }
+//    }
 
     public void makeMove(Action action){
         System.out.println(action.print());
-        if(action.get__action() == ActionEnum.A_ADD){
-            this.__newOrganisms.add(action.get__organism());
+        switch (action.get__action()) {
+            case A_ADD -> this.__newOrganisms.add(action.get__organism());
+            case A_INCREASEPOWER -> action.__organism.setPower(action.__organism.getPower() + action.get__value());
+            case A_MOVE -> action.__organism.setPosition(action.__position);
+            case A_REMOVE -> action.__organism.setPosition(new Position(action.__organism.getPosition(), -1, -1));
+            case A_STOP -> this.__turnStop = 3;
         }
-        else if (action.get__action() == ActionEnum.A_INCREASEPOWER){
-            action.__organism.setPower(action.__organism.getPower()+action.get__value());
-        }
-        else if (action.get__action() == ActionEnum.A_MOVE){
-            action.__organism.setPosition(action.__position);
-        }
-        else if (action.get__action() == ActionEnum.A_REMOVE){
-            action.__organism.setPosition(new Position(action.__organism.getPosition(), -1,-1));
-        }
-        else if (action.get__action() == ActionEnum.A_STOP){
-            this.__turnStop = 3;
-        }
+
     }
 
     public boolean addOrganism(Organism newOrganism){
@@ -288,21 +313,6 @@ public class World {
         return result;
     }
 
-    public ArrayList<Position> getTwoNeigthboringOrganisms(Position position){
-        ArrayList<Position> result = new ArrayList<Position>();
-        Position pomPosition;
-
-        for (int y=-2; y<3; y++){
-            for(int x=-2; x<3; x++){
-                pomPosition = new Position(null,position.getX() + x, position.getY() + y);
-                if(this.positiononBoard(pomPosition)){
-                    result.add(pomPosition);
-                }
-            }
-        }
-        return result;
-    }
-
     public void stopWorld(ArrayList<Position> positions){
         ArrayList<Position> result = new ArrayList<Position>();
         for(Position postion: positions){
@@ -311,6 +321,8 @@ public class World {
             }
         }
     }
+
+
 
     private boolean isIn(Organism org, ArrayList<Position> positions){
         for(Position p : positions){
@@ -380,4 +392,18 @@ public class World {
         }
         return result;
     }
+
+    @Override
+    public void register(Observer o){
+        observlist.add(o);
+        System.out.println("register");
+    }
+
+    @Override
+    public void notifyObservers(String name, String position){
+        for(Observer o: observlist){
+            o.death(name, position);
+        }
+    }
+
 }

@@ -45,7 +45,6 @@ public abstract class Aliens extends Organism{
         for(Position p : this.getTwoNeighboringPositionsTrue()){
             System.out.println("Organizm z pozycji: " + p.print() + " został zatrzymany");
         }
-        System.out.println("pozycje true: " +this.getTwoNeighboringPositionsTrue());
         __world.setPositionsWithStop(this.getTwoNeighboringPositionsTrue());
         __world.stopWorld(twoNeighboringPositions);
 
